@@ -1,0 +1,210 @@
+<?php
+
+if ($this->booking && $this->booking->get('status') == 'cancelled') {
+    $messages = ['info' => 'This booking has been cancelled'];
+} else {
+    $messages = [];
+}
+
+$this->setup(array(
+    'title' => 'Booking-Administration',
+    'panel' => 'centered-panel giant-sized',
+    'messages' => $messages,
+    'back' => true,
+));
+
+?>
+
+<div class="padded centered-text">
+    <?php
+
+    $form = $this->editForm;
+    $form->setAttribute('method', 'post');
+    $form->setAttribute('action', $this->url('backend/booking/edit', [], ['query' => ['em' => $this->editMode]]));
+    $form->prepare();
+
+    ?>
+
+    <?= $this->form()->openTag($form) ?>
+
+    <table class="default-table middle-table">
+        <tr>
+            <td>
+                <div class="sandbox">
+                    <?= $this->formElement($form->get('bf-rid')) ?>
+
+                    <table class="default-table">
+                        <?= $this->formRowCompact($form, 'bf-user') ?>
+                    </table>
+
+                    <?php if ($this->booking && $this->booking->getExtra('user')): ?>
+                        <?php $user = $this->booking->getExtra('user') ?>
+
+                        <div class="default-form-notes">
+                            <div><?= $this->t('Status') ?>: <?= $this->t($user->getStatus()) ?></div>
+
+                            <?php if ($user->get('email')): ?>
+                                <div><?= $this->t('Email') ?>: <?= $user->get('email') ?></div>
+                            <?php endif; ?>
+
+                            <?php if ($user->getMeta('phone')): ?>
+                                <div><?= $this->t('Phone') ?>: <?= $user->getMeta('phone') ?></div>
+                            <?php endif; ?>
+
+                            <?php if ($this->sessionUser->can('admin.user')): ?>
+                                <div style="margin-top: 8px;">
+                                    <a href="<?= $this->url('backend/user/edit', ['uid' => $user->need('uid')]) ?>" class="gray">
+                                        <span class="symbolic symbolic-edit"><?= $this->t('Edit user') ?></span>
+                                    </a>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    <?php elseif ($this->sessionUser->can('admin.user')): ?>
+                        <div style="margin-top: 8px;">
+                            <div>
+                                <label class="small-text gray">
+                                    <input type="checkbox" name="bf-edit-user"> <?= $this->t('Edit user once saved') ?>
+                                </label>
+                            </div>
+
+                            <div>
+                                <label class="small-text gray">
+                                    <input type="checkbox" name="bf-edit-bills"> <?= $this->t('Edit booking bills once saved') ?>
+                                </label>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </td>
+
+            <td>
+                <div class="sandbox">
+                    <table class="default-table">
+                        <tr>
+                            <td>
+                                <table class="default-table">
+                                    <?= $this->formRowCompact($form, 'bf-time-start') ?>
+                                    <?= $this->formRowCompact($form, 'bf-date-start') ?>
+                                </table>
+                            </td>
+
+                            <td>
+                                <table class="default-table">
+                                    <?= $this->formRowCompact($form, 'bf-time-end') ?>
+                                    <?= $this->formRowCompact($form, 'bf-date-end') ?>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2">
+                                <table class="default-table">
+                                    <?= $this->formRowCompact($form, 'bf-repeat') ?>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <?php if ($this->booking && $this->booking->get('status') == 'subscription' && $this->editMode == 'booking'): ?>
+                        <div class="centered-text small-text gray" style="margin-top: 16px; font-style: italic;">
+                            <a href="<?= $this->url('backend/booking/edit/range', ['bid' => $this->booking->need('bid')]) ?>" class="unlined symbolic symbolic-edit squarebox-internal-link">
+                                <?= $this->t('Edit time or date range') ?>
+                            </a>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </td>
+
+            <td>
+                <div class="sandbox">
+                    <table class="default-table">
+                        <?= $this->formRowCompact($form, 'bf-sid') ?>
+                        <?= $this->formRowCompact($form, 'bf-status-billing') ?>
+                        <?= $this->formRowCompact($form, 'bf-quantity') ?>
+                    </table>
+                </div>
+            </td>
+
+            <td>
+                <div class="sandbox">
+                    <table class="default-table">
+                        <?= $this->formRowCompact($form, 'bf-notes') ?>
+                    </table>
+
+                    <?php if ($this->booking): ?>
+                        <div class="default-form-notes">
+                            <div class="separator-small separator-line"></div>
+
+                            <?= $this->t('Bill') ?>:
+                            &nbsp;
+                            <a href="<?= $this->url('user/bookings/bills', ['bid' => $this->booking->get('bid')]) ?>" class="symbolic symbolic-info unlined gray"><?= $this->t('Check') ?></a>
+
+                            <?php if ($this->sessionUser->can('admin.booking')): ?>
+                                &nbsp;
+                                <a href="<?= $this->url('backend/booking/bills', ['bid' => $this->booking->get('bid')]) ?>" class="symbolic symbolic-edit unlined gray"><?= $this->t('Edit') ?></a>
+                            <?php endif; ?>
+                        </div>
+
+                        <div class="default-form-notes">
+                            <div class="separator-small separator-line"></div>
+
+                            <?php if ($this->booking->getMeta('creator')): ?>
+                                <?= sprintf($this->t('Booking created:<br>%s by %s'),
+                                    $this->prettyDate(new \DateTime($this->booking->get('created'))),
+                                    $this->booking->getMeta('creator')) ?>
+                            <?php else: ?>
+                                <?= sprintf($this->t('Booking created:<br>%s'),
+                                    $this->prettyDate(new \DateTime($this->booking->get('created')))) ?>
+                            <?php endif; ?>
+
+                            <?php if ($this->booking->getMeta('cancellor') && $this->booking->getMeta('cancelled')): ?>
+                                <br>
+
+                                <?= sprintf($this->t('Booking cancelled:<br>%s by %s'),
+                                    $this->prettyDate(new \DateTime($this->booking->get('cancelled'))),
+                                    $this->booking->getMeta('cancellor')) ?>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="4" class="centered-text" style="padding-top: 16px; border-top: solid 1px #CCC;">
+                <?php if ($this->sessionUser->can('admin.booking')): ?>
+                    <?= $this->formElement($form->get('bf-submit')) ?>
+                <?php endif; ?>
+
+                <?php if ($this->reservation): ?>
+                    <?php if ($this->sessionUser->can(['admin.booking', 'calendar.cancel-single-bookings', 'calendar.delete-single-bookings', 'calendar.cancel-subscription-bookings', 'calendar.delete-subscription-bookings'])): ?>
+                        <span class="gray" style="margin: 0 8px;"><?= $this->t('or') ?></span>
+
+                        <a href="<?= $this->url('backend/booking/delete', ['rid' => $this->reservation->get('rid')], ['query' => ['edit-mode' => $this->editMode]]) ?>" class="default-button squarebox-internal-link">
+                            <span class="symbolic symbolic-cross"><?= $this->t('Delete') ?></span>
+                        </a>
+                    <?php endif; ?>
+
+                <?php else: ?>
+                    <?php if ($this->sessionUser->can('admin.event')): ?>
+                        <span class="gray" style="margin: 0 8px;"><?= $this->t('or') ?></span>
+
+                        <a href="<?= $this->url('backend/event/edit', [], ['query' => ['ds' => $this->query['ds'], 'ts' => $this->query['ts'], 'te' => $this->query['te'], 's' => $this->query['s']]]) ?>" class="gray">
+                            <span class="symbolic symbolic-date"><?= $this->t('New event') ?></span>
+                        </a>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </td>
+        </tr>
+    </table>
+
+    <?= $this->form()->closeTag() ?>
+
+    <div id="bf-url-provider"
+         data-user-autocomplete-url="<?= $this->url('backend/user/interpret') ?>"></div>
+
+    <div id="bf-tag-provider"
+        data-edit-mode-tag="<?= $this->editMode ?>"></div>
+</div>
+
+<?= $this->ajaxAwareScript('js/controller/backend/booking/edit.min.js') ?>

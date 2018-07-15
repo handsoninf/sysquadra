@@ -1,0 +1,70 @@
+<?php
+
+$this->setup(array(
+    'title' => 'Behaviour',
+    'panel' => 'centered-panel large-sized',
+    'back' => array(
+        'Configuration' => $this->url('backend/config'),
+    ),
+));
+
+$this->headScript()->appendFile($this->basePath('js/controller/backend/config/behaviour.min.js'));
+
+?>
+
+<div>
+    <h1><?= $this->t('Behaviour') ?></h1>
+
+    <div class="separator-small"></div>
+
+    <p><?= $this->t('How does registration work? How many days are displayed in the calendar?') ?></p>
+
+    <?= $this->backendInfo('i18n') ?>
+
+    <div class="separator separator-line"></div>
+
+    <div class="padded">
+        <?php
+
+        $form = $this->behaviourForm;
+        $form->setAttribute('method', 'post');
+        $form->setAttribute('action', $this->url('backend/config/behaviour'));
+        $form->prepare();
+
+        ?>
+
+        <?= $this->form()->openTag($form) ?>
+
+        <table class="default-table">
+            <?= $this->formRowDefault($form, 'cf-maintenance') ?>
+            <?= $this->formRowDefault($form, 'cf-maintenance-message') ?>
+            <?= $this->formRowDefault($form, 'cf-registration') ?>
+            <?= $this->formRowDefault($form, 'cf-registration-message') ?>
+            <?= $this->formRowDefault($form, 'cf-activation') ?>
+            <?= $this->formRowDefault($form, 'cf-calendar-days') ?>
+            <?= $this->formRowDefault($form, 'cf-calendar-day-exceptions') ?>
+
+            <tr>
+                <td class="default-form-label-row">&nbsp;</td>
+                <td>
+                    <a href="<?= $this->url('backend/config/behaviour/rules') ?>" class="default-button">
+                        <span class="symbolic symbolic-edit"><?= $this->t('Edit business terms and privacy policy') ?></span>
+                    </a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="default-form-label-row">&nbsp;</td>
+                <td>
+                    <a href="<?= $this->url('backend/config/behaviour/status-colors') ?>" class="default-button">
+                        <span class="symbolic symbolic-edit"><?= $this->t('Edit billing status names and colors') ?></span>
+                    </a>
+                </td>
+            </tr>
+
+            <?= $this->formRowSubmit($form, 'cf-submit') ?>
+        </table>
+
+        <?= $this->form()->closeTag() ?>
+    </div>
+</div>

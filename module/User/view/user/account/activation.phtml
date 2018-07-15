@@ -1,0 +1,16 @@
+<?php
+
+$this->setup(array(
+    'title' => 'Activation complete',
+    'panel' => 'centered-panel',
+    'back' => true,
+    'links' => array(
+        'Login' => $this->url('user/login'),
+    ),
+));
+
+?>
+
+<div>
+    <?= $this->message('Sua conta de usuário foi ativada. Agora você pode fazer o login com seu endereço de e-mail e senha. Divirta-se! ',' Sucesso') ?>
+</div>

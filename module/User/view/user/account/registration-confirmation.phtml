@@ -1,0 +1,43 @@
+<?php
+
+$this->setup(array(
+    'title' => 'Registration complete',
+    'panel' => 'centered-panel',
+    'messages' => array(
+        'success' => 'O registro está completo e sua conta foi criada com sucesso',
+    ),
+    'back' => true,
+    'links' => array(
+        'Login' => $this->url('user/login'),
+        'Resend activation email' => $this->url('user/activation-resend'),
+    ),
+));
+
+?>
+
+<div class="padded centered-text">
+    <?php if ($this->activation == 'immediate'): ?>
+
+        <p><?= $this->t('Agora você pode fazer o login com seu email e senha. Divirta-se!') ?></p>
+
+    <?php elseif ($this->activation == 'manual' || $this->activation == 'manual-email'): ?>
+
+        <p><?= sprintf($this->t('No entanto, a sua conta ainda não está ativada por spas% s.'), '<b>', '</b>') ?></p>
+
+        <p><?= $this->t('Isso consistirá em uma verificação rápida das informações inseridas.') ?></p>
+
+        <p><?= $this->t('Por favor, seja paciente, será finalizado em breve.') ?></p>
+
+    <?php elseif ($this->activation == 'email'): ?>
+
+        <p><?= sprintf($this->t('A única etapa restante é desativar sua conta% s.'), '<b>', '</b>') ?></p>
+
+        <p><?= $this->t('Acabamos de enviar um e-mail de ativação com um link para esse efeito. Por favor verifique.') ?></p>
+
+        <p class="gray small-text">
+            <?= sprintf($this->t('Se você não recebeu nenhum e-mail nosso, ainda pode% solicitar um retorno de% s.'),
+                '<a href="' . $this->url('user/activation-resend') . '">', '</a>') ?>
+        </p>
+
+    <?php endif; ?>
+</div>

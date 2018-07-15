@@ -1,0 +1,9 @@
+- Update features
+- Update documentation
+
+- Update project files
+    - README.md
+    - VERSION
+- Update package
+
+- Update demo

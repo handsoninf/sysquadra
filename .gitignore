@@ -1,0 +1,12 @@
+/.idea/
+/.settings/
+/nbproject/
+
+/vendor/
+
+composer.phar
+
+Desktop.ini
+Thumbs.db
+
+.DS_Store

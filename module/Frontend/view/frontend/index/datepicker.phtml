@@ -1,0 +1,60 @@
+<?php
+
+$dateStartClone = clone $this->dateStart;
+$dateStartClone->modify('-1 day');
+
+$previousDayUrlQuery = ['date' => $dateStartClone->format('Y-m-d')];
+if ($this->squaresFilter) {
+    $previousDayUrlQuery['squares'] = $this->squaresFilter;
+}
+$previousDayUrl = $this->url('frontend', [], ['query' => $previousDayUrlQuery]);
+
+$dateStartClone->modify('+1 day');
+
+$currentDay = $this->dateFormat($dateStartClone, IntlDateFormatter::MEDIUM);
+
+$dateStartClone->modify('+1 day');
+
+$nextDayUrlQuery = ['date' => $dateStartClone->format('Y-m-d')];
+if ($this->squaresFilter) {
+    $nextDayUrlQuery['squares'] = $this->squaresFilter;
+}
+$nextDayUrl = $this->url('frontend', [], ['query' => $nextDayUrlQuery]);
+
+$todayUrlQuery = ['date' => $this->dateNow->format('Y-m-d')];
+if ($this->squaresFilter) {
+    $todayUrlQuery['squares'] = $this->squaresFilter;
+}
+$todayUrl = $this->url('frontend', [], ['query' => $todayUrlQuery]);
+
+?>
+
+<table style="height: 100%;">
+    <tr>
+        <td><a href="<?= $previousDayUrl ?>" class="default-button symbolic symbolic-button"><div class="arrow-left"></div>&nbsp;</a></td>
+        <td><a href="<?= $todayUrl ?>" class="default-button"><?= $this->t('Today') ?></a></td>
+
+        <td>
+            <form method="get" action="<?= $this->url('frontend') ?>">
+                <div class="inline-element">
+                    <label for="c-date" class="inline-label symbolic symbolic-date"><span><?= $this->t('Date') ?></span></label>
+                    <input type="text" name="date" id="c-date" value="<?= $currentDay ?>"
+                        class="inline-label-container datepicker datepicker-autosubmit" style="padding-left: 28px; width: 96px;">
+                </div>
+
+                <?php
+
+                if ($this->squaresFilter) {
+                    printf('<input type="hidden" name="squares" value="%s">',
+                        $this->squaresFilter);
+                }
+
+                ?>
+
+                <input type="submit" value="<?= $this->t('Show') ?>" id="calendar-toolbar-datepicker-submit" class="default-button">
+            </form>
+        </td>
+
+        <td><a href="<?= $nextDayUrl ?>" class="default-button symbolic symbolic-button"><div class="arrow-right"></div>&nbsp;</a></td>
+    </tr>
+</table>

@@ -1,0 +1,106 @@
+Options:
+
+- client.name.full
+- client.name.short
+- client.contact.email
+- client.contact.email.user-notifications   (optional) true|false
+- client.contact.phone
+- client.website                            URL
+- client.website.contact                    URL
+- client.website.imprint                    URL
+- client.website.privacy                    URL
+
+- service.name.full
+- service.name.short
+- service.user.registration                 true|false
+- service.user.registration.message         (optional)
+- service.user.registration.terms.file      (optional)
+- service.user.registration.terms.name      (optional)
+- service.user.registration.privacy.file    (optional)
+- service.user.registration.privacy.name    (optional)
+- service.user.activation                   immediate|manual|manual-email|email
+- service.calendar.days                     int
+- service.calendar.day-exceptions           (optional)
+- service.website                           URL
+- service.meta.description                  (optional)
+- service.maintenance                       (optional) true|false
+- service.maintenance.message               (optional)
+- service.branding                          (optional) true|false
+- service.branding.name                     (optional)
+- service.branding.website                  (optional)
+- service.pricing.visibility                public|private|never
+- service.pricing.payment                   none|invoice|paypal|invoice,paypal
+- service.status-values.billing             (optional)
+
+- subject.help                              HTML
+- subject.about                             HTML
+- subject.type                              (including determiner)
+- subject.square.type
+- subject.square.type.plural
+- subject.square.unit
+- subject.square.unit.plural
+
+
+
+Booking meta keys:
+
+- date_start                                (for subscriptions)
+- date_end                                  (for subscriptions)
+- time_start                                (for subscriptions)
+- time_end                                  (for subscriptions)
+- repeat                                    (for subscriptions)
+- notes                                     (optional)
+- creator                                   (optional, if created by admin or assist)
+- cancellor                                 (optional, if cancelled by admin or assist)
+- cancelled                                 (optional, if cancelled by admin or assist)
+- player-names                              (optional, if multi-player bookinh)
+
+
+
+Reservation meta keys:
+
+- notes                                     (optional)
+
+
+
+Event meta keys:
+
+- name
+- description                               HTML
+- notes                                     (optional)
+
+
+
+Square meta keys:
+
+- info.pre                                  (optional)
+- info.post                                 (optional)
+- info.capacity                             (optional) true|false
+- rules.text                                (optional)
+- rules.document.file                       (optional)
+- rules.document.name                       (optional)
+- readonly.message                          (optional)
+- public_names                              (optional) true|false
+- private_names                             (optional) true|false
+- capacity-ask-names                        (optional)
+- label.free                                (optional)
+- pseudo-time-block-bookable                (optional) true|false
+
+
+
+User meta keys:
+
+- gender
+- firstname
+- lastname
+- street
+- zip
+- city
+- phone
+- birthdate                                 (optional)
+- locale                                    (optional)
+- allow.{privilege}                         (optional) true|false
+- notification.bookings                     (optional) true|false
+- deletion.reason                           (optional)
+- legacy-pw                                 (optional)
+- notes                                     (optional)
