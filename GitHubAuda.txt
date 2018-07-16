@@ -1,0 +1,4 @@
+git init
+git add --all 
+git commit -m 'Teste de github'
+git push origin master
